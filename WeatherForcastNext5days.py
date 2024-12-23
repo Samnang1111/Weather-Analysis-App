@@ -1,9 +1,12 @@
+import os
 import requests 
 import matplotlib.pyplot as plt  
-import os  
 
-# OpenWeatherMap API key
-API_KEY = 'a8aa1554bd05e74f9bd2275c622d3f0d'
+# Retrieve the API key from environment variables
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
+if not API_KEY:
+    raise ValueError("API key not found. Please set the OPENWEATHER_API_KEY environment variable.")
+
 try:
     def fetch_weather_data(city):
         # Construct the API request URL with the city name and API key
@@ -31,7 +34,7 @@ try:
     def collect_weather_data():
 
         city = input("Enter the city name: ")  # Prompt the user for a city name
-        os.system("cls")  # Clear the console screen (Windows specific)
+        os.system("cls" if os.name == "nt" else "clear")  # Clear the console screen (cross-platform)
         temperatures = fetch_weather_data(city)  # Fetch the weather data for the city
         
         # Check if temperatures were successfully retrieved
@@ -118,6 +121,3 @@ try:
         main()  # Call the main function 
 except Exception as e:
     print("Please enter a valid city name.")  # Print any errors that occurred during execution
-    
-
-
